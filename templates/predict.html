@@ -1,0 +1,72 @@
+{% extends 'layout.html' %} {% block body %}
+
+<div class="row">
+  <div class="col-md-4 order-md-2 mb-4">
+    <h4 class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-muted">Prediction Result : </span>
+      <span class="badge badge-secondary badge-pill">{{prediction_text}}</span>
+    </h4>
+    <img src="{{url_for('static', filename=img)}}" alt="{{img}}" width="300" />
+  </div>
+
+  <div class="col-md-8 order-md-1">
+    <h4 class="mb-3">Iris Features</h4>
+    <img src="{{url_for('static', filename='img.png')}}" width="300" />
+    <h4 class="mb-3"></h4>
+
+    <form
+      class="needs-validation"
+      action="{{ url_for('predict')}}"
+      method="post"
+    >
+      <div class="input-group col-sm-7">
+        <label class="control-label col-sm-5">Sepal Length</label>
+        <input
+          class="form-control"
+          type="number"
+          step="0.1"
+          min="0"
+          name="sepalLength"
+          required=""
+        />
+      </div>
+      <div class="input-group col-sm-7">
+        <label class="control-label col-sm-5">Sepal Width</label>
+        <input
+          class="form-control"
+          type="number"
+          step="0.1"
+          min="0"
+          name="sepalWidth"
+          required=""
+        />
+      </div>
+      <div class="input-group col-sm-7">
+        <label class="control-label col-sm-5">Petal Length</label>
+        <input
+          class="form-control"
+          type="number"
+          step="0.1"
+          min="0"
+          name="petalLength"
+          required=""
+        />
+      </div>
+      <div class="input-group col-sm-7">
+        <label class="control-label col-sm-5">Petal Width</label>
+        <input
+          class="form-control"
+          type="number"
+          step="0.1"
+          min="0"
+          name="petalWidth"
+          required=""
+        />
+      </div>
+      <hr class="mb-2" />
+      <button class="btn btn-primary" type="submit">Predict</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
