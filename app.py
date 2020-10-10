@@ -22,19 +22,19 @@ def predict():
         # open model
         with open("model.pkl", "rb") as file:
             clf = pickle.load(file)
-        # gather all input data into float-type list
+        # ambil semua nilai dalam post ke dalam satu array
         int_features = [float(x) for x in request.form.values()]
-        # convert list into 2d numpy array
+        # convert list ke 2d numpy array
         int_features = np.array([int_features])    
-        # predict based on saved model and only return value
+        # lakukan prediksi dari model tersimpan dan kembalikan kode kelas
         prediction = clf.predict(int_features)[0]
-        # label name reference
+        # referensi label kelas
         target_names = ['Iris setosa', 'Iris versicolor', 'Iris virginica']
-        # get label name based on index from prediction variable
+        # cari nama label berdasarkan kode kelas hasil prediksi
         hasil = target_names[prediction]
-        # return to predict.html page with prediction_text data
+        # return halaman predict.html dengan data hasil prediksi
         return render_template('predict.html', prediction_text='{}'.format(hasil), img='{}'.format(hasil+'.jpg'))
-    # default prediction page
+    # halaman default prediction jika user belum submit
     else:
         return render_template('predict.html')
 

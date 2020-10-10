@@ -20,10 +20,13 @@ for i in ([1, 3, 5, 7, 9, 11]):
     acc_score.append([i, acc])
 print(acc_score)
 
-# Train dengan parameter terbaik
-clf = KNeighborsClassifier(n_neighbors=11)
+# Cari nilai k dengan akurasi tertinggi
+bestK = max(acc_score, key=lambda x:x[1])[0]
+
+# Train dengan nilai k terbaik
+clf = KNeighborsClassifier(n_neighbors=bestK)
 clf.fit(x_train, y_train)
 
-# Save model dengan parameter terbaik
+# Save model
 with open("model.pkl", "wb") as file:
     pickle.dump(clf, file)
