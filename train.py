@@ -1,32 +1,23 @@
-# import library
-from sklearn import datasets
-from sklearn.neighbors import KNeighborsClassifier
+import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
-import pickle
+from sklearn.preprocessing import StandardScaler
 
-# Load data
-iris = datasets.load_iris()
-x = iris.data
-y = iris.target
-x_train, x_test, y_train, y_test = train_test_split(
-    x, y, test_size=0.25, random_state=12)
+iris = pd.read_csv('dataset.csv')
+x = iris[['sepal.length', 'sepal.width', 'petal.length', 'petal.width']].values
+y = iris['label'].values
+x = StandardScaler().fit_transform(x)
 
-# Eksperimen dengan mengubah parameter jumlah neighbours
-acc_score = []
-for i in ([1, 3, 5, 7, 9, 11]):
-    clf = KNeighborsClassifier(n_neighbors=i)
-    clf.fit(x_train, y_train)
-    acc = clf.score(x_test, y_test)
-    acc_score.append([i, acc])
-print(acc_score)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, stratify=y, random_state=12)
 
-# Cari nilai k dengan akurasi tertinggi
-bestK = max(acc_score, key=lambda x:x[1])[0]
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Sequential
 
-# Train dengan nilai k terbaik
-clf = KNeighborsClassifier(n_neighbors=bestK)
-clf.fit(x_train, y_train)
-
-# Save model
-with open("model.pkl", "wb") as file:
-    pickle.dump(clf, file)
+model = Sequential()
+model.add(Dense(32, input_dim=4, activation='relu'))
+model.add(Dense(16, activation='relu'))
+model.add(Dense(4, activation='softmax'))
+model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=100)
+model.save('model.h5')
+print('model succesfully trained and saved')
