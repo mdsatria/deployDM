@@ -9,18 +9,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Flask App</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <link
-      href="https://getbootstrap.com/docs/4.5/examples/starter-template/starter-template.css"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <link href="https://getbootstrap.com/docs/4.5/examples/starter-template/starter-template.css" rel="stylesheet"/>
     <meta name="description" content="" />
   </head>
   <body>
+
     {% include 'includes/_navbar.html' %}
+
     <!--[if lt IE 7]>
       <p class="browsehappy">
         You are using an <strong>outdated</strong> browser. Please
@@ -28,9 +24,12 @@
       </p>
     <![endif]-->
     <main role="main" class="container">
-      <div class="starter-template">{% block body %} {% endblock %}</div>
-    </main>
+      <div class="starter-template">
 
+        {% block body %} {% endblock %}
+
+      </div>
+    </main>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>

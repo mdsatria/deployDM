@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from tensorflow.keras.models import load_model
 import numpy as np
-import pickle
 
 app = Flask(__name__)
 
@@ -23,14 +22,15 @@ def predict():
         petalLength = request.form.get('petalLength') 
         petalWidth = request.form.get('petalWidth') 
         # scale data
-        sepalLength = (np.float(sepalLength) - 5.843)/ 0.825
-        sepalWidth = (np.float(sepalWidth) - 3.057)/ 0.434
-        petalLength = (np.float(petalLength) - 3.758)/ 1.759
-        petalWidth = (np.float(petalWidth) - 1.199)/ 0.759
-        # combine feature into 1d array
-        feature = np.array([sepalLength, sepalWidth, petalLength, petalWidth]).astype(np.float16)
-        # reshape feature to shape (1,4)
-        feature = np.expand_dims(feature, axis=0)
+        # mean and std
+        atribut_mean = np.array([5.84333333, 3.05733333, 3.758 , 1.19933333])
+        std_mean = np.array([0.82530129, 0.43441097, 1.75940407, 0.75969263])        
+        sepalLength = (np.float(sepalLength) - atribut_mean[0])/ std_mean[0]
+        sepalWidth = (np.float(sepalWidth) - atribut_mean[1])/ std_mean[1]
+        petalLength = (np.float(petalLength) - atribut_mean[2])/ std_mean[2]
+        petalWidth = (np.float(petalWidth) - atribut_mean[3])/ std_mean[3]
+        # combine feature into 2d array
+        feature = np.array([[sepalLength, sepalWidth, petalLength, petalWidth]]).astype(np.float16)
         # predict with loaded model
         prediction = model.predict(feature)
         # find the index of max value in vector prediction
@@ -41,12 +41,7 @@ def predict():
         return render_template('predict.html', prediction_text='{}'.format(result), img='{}'.format(result+'.jpg'))
     # default prediction page
     else:
-        return render_template('predict.html')
-    
-# about page
-@app.route('/about')
-def about():
-    return render_template('about.html')
+        return render_template('predict.html')    
 
 if __name__ == '__main__':
     app.run(debug=True)
